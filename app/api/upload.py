@@ -5,6 +5,9 @@ from fastapi import APIRouter, UploadFile, File, HTTPException
 from pydantic import BaseModel
 from app.services.extraction_service import extract_text_from_pdf
 from app.services.cleanup_service import normalize_text
+from app.services.parser_service import extract_total_premium
+
+
 
 
 
@@ -62,10 +65,14 @@ def extract_documents(payload: ExtractRequest):
 
     dec_text = normalize_text(extract_text_from_pdf(dec_path))
     quote_text = normalize_text(extract_text_from_pdf(quote_path))
+    dec_total_premium = extract_total_premium(dec_text)
+    quote_total_premium = extract_total_premium(quote_text)
     return {
         "comparison_id": payload.comparison_id,
         "dec_page_chars": len(dec_text),
         "quote_chars": len(quote_text),
         "dec_preview": dec_text[:400],
         "quote_preview": quote_text[:400],
+        "dec_total_premium": dec_total_premium,
+        "quote_total_premium": quote_total_premium,
     }
