@@ -6,6 +6,7 @@ from pydantic import BaseModel
 from app.services.extraction_service import extract_text_from_pdf
 from app.services.cleanup_service import normalize_text
 from app.services.parser_service import extract_total_premium
+from app.services.parser_service import extract_policy_term_months
 
 
 
@@ -67,6 +68,8 @@ def extract_documents(payload: ExtractRequest):
     quote_text = normalize_text(extract_text_from_pdf(quote_path))
     dec_total_premium = extract_total_premium(dec_text)
     quote_total_premium = extract_total_premium(quote_text)
+    dec_term_months = extract_policy_term_months(dec_text)
+    quote_term_months = extract_policy_term_months(quote_text)
     return {
         "comparison_id": payload.comparison_id,
         "dec_page_chars": len(dec_text),
@@ -75,4 +78,6 @@ def extract_documents(payload: ExtractRequest):
         "quote_preview": quote_text[:400],
         "dec_total_premium": dec_total_premium,
         "quote_total_premium": quote_total_premium,
+        "dec_term_months": dec_term_months,
+        "quote_term_months": quote_term_months,
     }
