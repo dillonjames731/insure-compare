@@ -71,7 +71,7 @@ def extract_documents(payload: ExtractRequest):
     dec_term_months = extract_policy_term_months(dec_text)
     quote_term_months = extract_policy_term_months(quote_text)
     premium_comparison = compare_premiums(dec_total_premium, quote_total_premium)
-    term_comparison = compare_term(dec_term_months, quote_term_months)
+    term_comparison = compare_terms(dec_term_months, quote_term_months)
     overall_summary = f"{premium_comparison['summary']} {term_comparison['summary']}"
 
     return {
@@ -85,5 +85,6 @@ def extract_documents(payload: ExtractRequest):
         "dec_term_months": dec_term_months,
         "quote_term_months": quote_term_months,
         "premium_comparison": premium_comparison,
+        "term_comparison": term_comparison,
         "overall_summary": overall_summary,
     }
