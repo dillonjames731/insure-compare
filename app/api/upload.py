@@ -7,8 +7,7 @@ from app.services.extraction_service import extract_text_from_pdf
 from app.services.cleanup_service import normalize_text
 from app.services.parser_service import extract_total_premium
 from app.services.parser_service import extract_policy_term_months
-from app.services.compare_service import compare_premiums
-
+from app.services.compare_service import compare_premiums, compare_terms
 
 
 
@@ -72,6 +71,9 @@ def extract_documents(payload: ExtractRequest):
     dec_term_months = extract_policy_term_months(dec_text)
     quote_term_months = extract_policy_term_months(quote_text)
     premium_comparison = compare_premiums(dec_total_premium, quote_total_premium)
+    term_comparison = compare_term(dec_term_months, quote_term_months)
+    overall_summary = f"{premium_comparison['summary']} {term_comparison['summary']}"
+
     return {
         "comparison_id": payload.comparison_id,
         "dec_page_chars": len(dec_text),
@@ -83,4 +85,5 @@ def extract_documents(payload: ExtractRequest):
         "dec_term_months": dec_term_months,
         "quote_term_months": quote_term_months,
         "premium_comparison": premium_comparison,
+        "overall_summary": overall_summary,
     }
