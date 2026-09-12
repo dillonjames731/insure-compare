@@ -8,6 +8,7 @@ from app.services.cleanup_service import normalize_text
 from app.services.parser_service import extract_total_premium
 from app.services.parser_service import extract_policy_term_months
 from app.services.compare_service import compare_premiums, compare_terms
+from app.services.parser_service import extract_deductible
 
 
 
@@ -72,6 +73,10 @@ def extract_documents(payload: ExtractRequest):
     quote_term_months = extract_policy_term_months(quote_text)
     premium_comparison = compare_premiums(dec_total_premium, quote_total_premium)
     term_comparison = compare_terms(dec_term_months, quote_term_months)
+    dec_collision_deductible = extract_deductible(dec_text, "Collision")
+    quote_collision_deductible = extract_deductible(quote_text, "Collision")
+    dec_comprehensive_deductible = extract_deductible(dec_text, "Comprehensive")
+    quote_comprehensive_deductible = extract_deductible(quote_text, "Comprehensive")
     overall_summary = f"{premium_comparison['summary']} {term_comparison['summary']}"
 
     return {
@@ -86,5 +91,9 @@ def extract_documents(payload: ExtractRequest):
         "quote_term_months": quote_term_months,
         "premium_comparison": premium_comparison,
         "term_comparison": term_comparison,
+        "dec_collision_deductible": dec_collision_deductible,
+        "quote_collision_deductible": quote_collision_deductible,
+        "dec_comprehensive_deductible": dec_comprehensive_deductible,
+        "quote_comprehensive_deductible": quote_comprehensive_deductible,
         "overall_summary": overall_summary,
     }
