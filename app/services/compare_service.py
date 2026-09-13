@@ -42,3 +42,23 @@ def compare_premiums(current_premium: float | None, new_premium: float | None) -
         "difference": difference,
         "summary": summary,
     }
+def compare_deductibles(current_value: int | None, new_value: int | None, label: str) -> dict:
+    if current_value is None or new_value is None:
+        return {
+            "status": "insufficient_info",
+            "difference": None,
+            "summary": f"I could not find {label} deductible in one or both documents yet."
+        }
+    difference = new_value - current_value
+
+    if difference > 0:
+        summary = f"The quote you are comparing has a {label} deductible of ${difference:,.0f} more."
+        elif difference < 0:
+        summary = f"The quote you are comparing has a {label} deductible of ${abs(difference):,.0f} less."
+        else:
+        summary = f"Both quotes have the same {label} deductible of ${difference:,.0f}."
+        return {
+        "status": "ok",
+        "difference": difference,
+        "summary": summary,
+        }
