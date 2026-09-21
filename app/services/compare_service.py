@@ -53,12 +53,12 @@ def compare_deductibles(current_value: int | None, new_value: int | None, label:
 
     if difference > 0:
         summary = f"The quote you are comparing has a {label} deductible of ${difference:,.0f} more."
-        elif difference < 0:
+    elif difference < 0:
         summary = f"The quote you are comparing has a {label} deductible of ${abs(difference):,.0f} less."
-        else:
+    else:
         summary = f"Both quotes have the same {label} deductible of ${difference:,.0f}."
         return {
-        "status": "ok",
-        "difference": difference,
-        "summary": summary,
+                "status": "ok",
+                "difference": difference,
+                "summary": summary,
         }

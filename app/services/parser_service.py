@@ -39,7 +39,7 @@ def extract_policy_term_months(text: str) -> int | None:
 
     return int(match.group(1))
 
-def extract_policy_with_keywords(text: str, keywords: list[str]) -> int | None:
+def extract_with_keywords(text: str, keywords: list[str]) -> int | None:
     for keyword in keywords:
         value = extract_deductible(text, keyword)
         if value is not None:
