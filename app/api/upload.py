@@ -10,6 +10,7 @@ from app.services.parser_service import extract_policy_term_months
 from app.services.compare_service import compare_premiums, compare_terms
 from app.services.parser_service import extract_deductible
 from app.services.compare_service import compare_deductibles
+from app.services.parser_service import extract_with_keywords
 
 
 
@@ -74,10 +75,10 @@ def extract_documents(payload: ExtractRequest):
     quote_term_months = extract_policy_term_months(quote_text)
     premium_comparison = compare_premiums(dec_total_premium, quote_total_premium)
     term_comparison = compare_terms(dec_term_months, quote_term_months)
-    dec_collision_deductible = extract_deductible(dec_text, "Collision")
-    quote_collision_deductible = extract_deductible(quote_text, "Collision")
-    dec_comprehensive_deductible = extract_deductible(dec_text, "Comprehensive")
-    quote_comprehensive_deductible = extract_deductible(quote_text, "Comprehensive")
+    dec_collision_deductible = extract_with_keywords(dec_text, ["collision", "coverage d", "section i"])
+    quote_collision_deductible = extract_with_keywords(quote_text, ["collision"])
+    dec_comprehensive_deductible = extract_with_keywords(dec_text, ["comprehensive", "all other perils", "coverage c"])
+    quote_comprehensive_deductible = extract_with_keywords(quote_text, ["comprehensive"])
     collision_deductible_comparison = compare_deductibles(
         dec_collision_deductible,
         quote_collision_deductible,
